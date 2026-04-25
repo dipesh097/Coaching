@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}Sign Up - Apex Coaching{% endblock %}
+
+{% block content %}
+<div class="split-layout animate-fade-up">
+    <div class="split-image" style="background-image: url('/static/images/results.png');">
+        <div class="split-image-text">
+            <h2>Start Your Journey</h2>
+            <p>Join the best coaching institute and pave your way to the top IITs and Medical Colleges.</p>
+        </div>
+    </div>
+    <div class="split-form">
+        <h2 style="margin-bottom: 2rem; color: var(--text-dark);">Create an Account</h2>
+        <form method="POST">
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" name="name" class="form-control" required placeholder="John Doe">
+            </div>
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" class="form-control" required placeholder="you@example.com">
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" class="form-control" required placeholder="••••••••">
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Sign Up</button>
+        </form>
+        <p style="margin-top: 2rem; text-align: center; color: var(--text-light);">
+            Already have an account? <a href="{{ url_for('login') }}" style="color: var(--primary-color); font-weight: 500; text-decoration: none;">Sign in here</a>.
+        </p>
+    </div>
+</div>
+{% endblock %}

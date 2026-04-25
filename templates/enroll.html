@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}Enroll in a Course - Apex Coaching{% endblock %}
+
+{% block content %}
+<h1 class="section-title animate-fade-up">Enrollment Form</h1>
+<p class="text-center animate-fade-up delay-100" style="margin-bottom: 2rem; color: var(--text-light);">Take the first step towards your IIT/Medical dream.</p>
+
+<div class="form-container animate-fade-up delay-200">
+    <form method="POST">
+        <div class="form-group">
+            <label for="name">Full Name</label>
+            <!-- Pre-fill from session if possible, though we don't pass user context yet. -->
+            <input type="text" id="name" name="name" class="form-control" value="{{ session.get('user_name', '') }}" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" class="form-control" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" name="phone" class="form-control" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="course">Select Target Course</label>
+            <select id="course" name="course" class="form-control" required>
+                <option value="">-- Choose a course --</option>
+                {% for course in courses %}
+                    <!-- Support pre-selecting based on query param -->
+                    <option value="{{ course.course_name }}" {% if request.args.get('course') == course.course_name %}selected{% endif %}>
+                        {{ course.course_name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Submit Application</button>
+    </form>
+</div>
+{% endblock %}

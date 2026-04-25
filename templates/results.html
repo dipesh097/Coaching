@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}Previous Results - Apex Coaching{% endblock %}
+
+{% block content %}
+<div class="results-hero animate-fade-up">
+    <div class="results-hero-content">
+        <h1>Consistent Excellence</h1>
+        <p style="font-size: 1.2rem; max-width: 600px; margin: 0 auto;">Year after year, our students secure top ranks in JEE Advanced, JEE Main, and NEET. Join the league of achievers.</p>
+    </div>
+</div>
+
+<h2 class="section-title animate-fade-up delay-100">Star Achievers - 2025</h2>
+
+<div class="grid animate-fade-up delay-200" style="margin-bottom: 4rem;">
+    <!-- Mock Achiever 1 -->
+    <div class="card" style="text-align: center;">
+        <div style="width: 120px; height: 120px; border-radius: 50%; background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); margin: 0 auto 1.5rem; display: flex; align-items: center; justify-content: center; color: #0b132b; font-size: 2.5rem; font-weight: 800;">
+            1
+        </div>
+        <h3>Rahul Verma</h3>
+        <span class="duration">AIR 12 - JEE Advanced</span>
+        <p>"The advanced problem-solving sessions at Apex Coaching were instrumental in my success."</p>
+    </div>
+
+    <!-- Mock Achiever 2 -->
+    <div class="card" style="text-align: center;">
+        <div style="width: 120px; height: 120px; border-radius: 50%; background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); margin: 0 auto 1.5rem; display: flex; align-items: center; justify-content: center; color: #0b132b; font-size: 2.5rem; font-weight: 800;">
+            2
+        </div>
+        <h3>Sneha Patel</h3>
+        <span class="duration">AIR 45 - NEET UG</span>
+        <p>"The highly experienced faculty and comprehensive mock tests prepared me perfectly for the final day."</p>
+    </div>
+
+    <!-- Mock Achiever 3 -->
+    <div class="card" style="text-align: center;">
+        <div style="width: 120px; height: 120px; border-radius: 50%; background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); margin: 0 auto 1.5rem; display: flex; align-items: center; justify-content: center; color: #0b132b; font-size: 2.5rem; font-weight: 800;">
+            3
+        </div>
+        <h3>Amit Kumar</h3>
+        <span class="duration">99.98 %ile - JEE Main</span>
+        <p>"Consistent guidance and the competitive environment here pushed me to give my best."</p>
+    </div>
+</div>
+
+<div class="card animate-fade-up delay-300" style="text-align: center; max-width: 800px; margin: 0 auto;">
+    <h3 style="font-size: 2rem;">200+ Selections this year!</h3>
+    <p>We are proud of all our students who have cracked the toughest entrance exams in the country. Your success story starts here.</p>
+    {% if session.get('user_id') %}
+        <a href="{{ url_for('enroll') }}" class="btn btn-primary" style="margin-top: 1rem;">Be the Next Achiever</a>
+    {% else %}
+        <a href="{{ url_for('signup') }}" class="btn btn-primary" style="margin-top: 1rem;">Be the Next Achiever</a>
+    {% endif %}
+</div>
+{% endblock %}

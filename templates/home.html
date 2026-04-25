@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - Apex Coaching{% endblock %}
+
+{% block content %}
+<div class="hero-wrapper animate-fade-up">
+    <div class="hero-content">
+        <h1>Crack <span class="highlight-cyan">JEE</span> & <span class="highlight-gold">NEET</span> with Elite Faculty</h1>
+        <p>Join Apex Coaching and turn your engineering and medical dreams into reality. We provide the most advanced curriculum, personalized mentorship, and AI-driven analytics.</p>
+        <div class="hero-actions">
+            {% if session.get('user_id') %}
+                <a href="{{ url_for('enroll') }}" class="btn btn-primary">Enroll Now</a>
+            {% else %}
+                <a href="{{ url_for('signup') }}" class="btn btn-primary">Start Your Journey</a>
+            {% endif %}
+            <a href="{{ url_for('courses') }}" class="btn btn-outline">Explore Courses</a>
+        </div>
+    </div>
+    <div class="hero-image animate-fade-up delay-200">
+        <img src="{{ url_for('static', filename='images/hero.png') }}" alt="Focused students studying">
+    </div>
+</div>
+
+<h2 class="section-title animate-fade-up delay-100">Our Premium Programs</h2>
+
+<div class="grid animate-fade-up delay-200">
+    {% for course in courses %}
+    <div class="card">
+        <h3>{{ course.course_name }}</h3>
+        <span class="duration">{{ course.duration }}</span>
+        <p>{{ course.description }}</p>
+        {% if session.get('user_id') %}
+            <a href="{{ url_for('enroll') }}?course={{ course.course_name|urlencode }}" class="btn btn-primary" style="width: 100%;">Enroll Now</a>
+        {% else %}
+            <a href="{{ url_for('login') }}" class="btn btn-primary" style="width: 100%;">Sign in to Enroll</a>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

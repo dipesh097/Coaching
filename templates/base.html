@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Apex Coaching | Premium JEE & NEET Prep{% endblock %}</title>
+    <!-- Custom CSS (Imports Poppins Font) -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <!-- Animated Background Shapes -->
+    <div class="bg-shapes-container">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+    </div>
+
+    <nav>
+        <div class="nav-container">
+            <a href="{{ url_for('home') }}" class="logo">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
+                APEX
+            </a>
+            <ul class="nav-links">
+                <li><a href="{{ url_for('home') }}">Home</a></li>
+                <li><a href="{{ url_for('courses') }}">Courses</a></li>
+                <li><a href="{{ url_for('faculty') }}">Faculty</a></li>
+                <li><a href="{{ url_for('results') }}">Results</a></li>
+                <li><a href="{{ url_for('contact') }}">Contact</a></li>
+                
+                {% if session.get('user_id') %}
+                    <li><a href="{{ url_for('enroll') }}" class="btn-nav-highlight">Enroll Now</a></li>
+                    {% if session.get('user_email') == 'dipesh97@gmail.com' %}
+                    <li><a href="{{ url_for('admin') }}">Admin</a></li>
+                    {% endif %}
+                    <li><a href="{{ url_for('logout') }}" style="color: var(--text-light);">Logout</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('login') }}" style="color: var(--text-light);">Log In</a></li>
+                    <li><a href="{{ url_for('signup') }}" class="btn-nav-highlight">Sign Up</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Flash Messages -->
+        <div class="flash-messages">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }} animate-fade-up">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Apex Coaching Institute. Elevating Futures in JEE & NEET.</p>
+    </footer>
+
+    <!-- Chatbot Window -->
+    <div class="chatbot-window" id="chatbot-window">
+        <div class="chatbot-header">
+            <h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg> Apex Guide</h3>
+            <button class="close-btn" id="close-chatbot">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+        </div>
+        
+        <ul class="chatbox" id="chatbox">
+            <li class="chat incoming">
+                <p>Welcome to Apex Coaching! 🚀 How can I help you today?</p>
+            </li>
+        </ul>
+
+        <!-- Top 7 General Questions Quick Replies -->
+        <div class="quick-replies" id="quick-replies">
+            <button class="quick-reply-btn" onclick="sendQuickReply('Tell me about your courses')">Courses 📚</button>
+            <button class="quick-reply-btn" onclick="sendQuickReply('What is the fee structure?')">Fees 💰</button>
+            <button class="quick-reply-btn" onclick="sendQuickReply('Who are the faculties?')">Faculties 👨‍🏫</button>
+            <button class="quick-reply-btn" onclick="sendQuickReply('Show me previous results')">Results 🏆</button>
+            <button class="quick-reply-btn" onclick="sendQuickReply('How to enroll?')">Admission 📝</button>
+            <button class="quick-reply-btn" onclick="sendQuickReply('Tell me about JEE preparation')">JEE Prep ⚛️</button>
+            <button class="quick-reply-btn" onclick="sendQuickReply('Tell me about NEET preparation')">NEET Prep 🧬</button>
+        </div>
+
+        <div class="chat-input">
+            <input type="text" id="chat-input" placeholder="Type your question..." required>
+            <button id="send-btn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- Chatbot Toggler Button -->
+    <button class="chatbot-toggler" id="chatbot-toggler">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+    </button>
+
+    <!-- Chatbot Script -->
+    <script>
+        const chatbotToggler = document.getElementById('chatbot-toggler');
+        const chatbotWindow = document.getElementById('chatbot-window');
+        const closeBtn = document.getElementById('close-chatbot');
+        const chatbox = document.getElementById('chatbox');
+        const chatInput = document.getElementById('chat-input');
+        const sendBtn = document.getElementById('send-btn');
+        const quickRepliesContainer = document.getElementById('quick-replies');
+
+        chatbotToggler.addEventListener('click', () => {
+            chatbotWindow.classList.toggle('show');
+        });
+
+        closeBtn.addEventListener('click', () => {
+            chatbotWindow.classList.remove('show');
+        });
+
+        const createChatLi = (message, className) => {
+            const chatLi = document.createElement("li");
+            chatLi.classList.add("chat", className);
+            let chatContent = className === "outgoing" ? `<p></p>` : `<p></p>`;
+            chatLi.innerHTML = chatContent;
+            chatLi.querySelector("p").textContent = message;
+            return chatLi;
+        }
+
+        const handleChat = async (message) => {
+            const userMessage = message || chatInput.value.trim();
+            if (!userMessage) return;
+
+            if(!message) chatInput.value = "";
+
+            chatbox.appendChild(createChatLi(userMessage, "outgoing"));
+            chatbox.scrollTo(0, chatbox.scrollHeight);
+
+            // Fetch response from server
+            try {
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: userMessage })
+                });
+                const data = await response.json();
+                
+                // Add a small delay for realistic typing effect
+                setTimeout(() => {
+                    chatbox.appendChild(createChatLi(data.response, "incoming"));
+                    chatbox.scrollTo(0, chatbox.scrollHeight);
+                }, 400);
+
+            } catch (error) {
+                chatbox.appendChild(createChatLi("Connection error. Please try again later. 🔌", "incoming"));
+                chatbox.scrollTo(0, chatbox.scrollHeight);
+            }
+        }
+
+        // Expose quick reply function globally
+        window.sendQuickReply = (msg) => {
+            handleChat(msg);
+        };
+
+        sendBtn.addEventListener("click", () => handleChat());
+        chatInput.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") {
+                handleChat();
+            }
+        });
+    </script>
+</body>
+</html>

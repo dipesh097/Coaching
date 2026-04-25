@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}Our Courses - Apex Coaching{% endblock %}
+
+{% block content %}
+<h1 class="section-title animate-fade-up">Explore Our Premium Courses</h1>
+
+<p class="text-center animate-fade-up delay-100" style="max-width: 700px; margin: 0 auto 3rem; color: var(--text-light);">
+    We offer specialized classroom programs, crash courses, and distance learning modules exclusively designed for JEE Main, JEE Advanced, and NEET UG aspirants.
+</p>
+
+<div class="grid animate-fade-up delay-200">
+    {% for course in courses %}
+    <div class="card">
+        <h3>{{ course.course_name }}</h3>
+        <span class="duration">{{ course.duration }}</span>
+        <p>{{ course.description }}</p>
+        {% if session.get('user_id') %}
+            <a href="{{ url_for('enroll') }}?course={{ course.course_name|urlencode }}" class="btn btn-primary text-center">Enroll</a>
+        {% else %}
+            <a href="{{ url_for('login') }}" class="btn btn-primary text-center">Sign in to Enroll</a>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

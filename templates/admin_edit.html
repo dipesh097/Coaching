@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Student - Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="animate-fade-up" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+    <h1 style="margin: 0; color: var(--text-dark);">Edit Enrollment</h1>
+    <a href="{{ url_for('admin') }}" class="btn btn-outline" style="padding: 0.5rem 1rem;">Back to Dashboard</a>
+</div>
+
+<div class="form-container animate-fade-up delay-100">
+    <form action="{{ url_for('edit_student', student_id=student.id) }}" method="POST">
+        <div class="form-group">
+            <label for="name">Student Name</label>
+            <input type="text" id="name" name="name" class="form-control" value="{{ student.name }}" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" class="form-control" value="{{ student.email }}" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="text" id="phone" name="phone" class="form-control" value="{{ student.phone }}" required>
+        </div>
+        
+        <div class="form-group" style="margin-bottom: 2.5rem;">
+            <label for="course">Target Course</label>
+            <select id="course" name="course" class="form-control" required>
+                {% for course in courses %}
+                    <option value="{{ course.course_name }}" {% if student.course == course.course_name %}selected{% endif %}>{{ course.course_name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div style="display: flex; gap: 1rem;">
+            <button type="submit" class="btn btn-primary" style="flex: 1;">Update Student</button>
+            <a href="{{ url_for('admin') }}" class="btn" style="background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2);">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
